@@ -1,15 +1,24 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ShoppingCart, Search, Percent, UserRound } from "lucide-react";
+import LoginModal from "../pages/loginpage";
+import { useDispatch, useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
+import { userLogout } from "../services/auth/loginAuth";
+import { removeUser } from "../utils/feature/userData";
 
 const NavBarPage = () => {
   const [dropDown, setDropDown] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
   const dropdownRef = useRef();
 
   const handleDropDown = () => {
     setDropDown((prev) => !prev);
   };
 
-  
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -22,7 +31,18 @@ const NavBarPage = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  
+
+  const fetchLogout = async () => {
+    try {
+      const res = await userLogout();
+      if (res) {
+        dispatch(removeUser());
+        enqueueSnackbar("logout successfully", { variant: "success" });
+      }
+    } catch (error) {
+      enqueueSnackbar(error?.message, { variant: "error" });
+    }
+  };
 
   return (
     <div className="w-full font-sans">
@@ -70,28 +90,39 @@ const NavBarPage = () => {
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     role="menuitem"
                   >
-                    Storefront
+                    Profile
                   </a>
                   <a
                     href="#"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     role="menuitem"
                   >
-                    Warehouse
+                    My Orders
                   </a>
                   <a
                     href="#"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     role="menuitem"
                   >
-                    Stock
+                    Premium
                   </a>
-                  <button
-                    type="button"
-                    className="w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-50"
-                  >
-                    Delete
-                  </button>
+                  {user?.name ? (
+                    <button
+                      type="button"
+                      onClick={fetchLogout}
+                      className="w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-50  cursor-pointer"
+                    >
+                      Logout
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setLoginOpen(!loginOpen)}
+                      className="w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-50  cursor-pointer"
+                    >
+                      Login
+                    </button>
+                  )}
                 </div>
               )}
             </div>
@@ -105,6 +136,7 @@ const NavBarPage = () => {
           </div>
         </div>
       </div>
+      {loginOpen && <LoginModal onClose={() => setLoginOpen(false)} />}
     </div>
   );
 };

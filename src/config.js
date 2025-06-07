@@ -1,0 +1,1 @@
+export const BASEURL =import.meta.env.VITE_FRONTEND_BASE_URL
