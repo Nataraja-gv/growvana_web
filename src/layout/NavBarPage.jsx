@@ -22,6 +22,7 @@ const NavBarPage = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+  
 
   return (
     <div className="w-full font-sans">
