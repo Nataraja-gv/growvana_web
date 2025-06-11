@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { userProfile } from "../services/auth/loginAuth";
 import { addUser } from "../utils/feature/userData";
+import FooterPage from "./FooterPage";
 
 const MainLayout = () => {
   const user = useSelector((state) => state?.user);
@@ -30,6 +31,7 @@ const MainLayout = () => {
     <div>
       <NavBarPage />
       <Outlet />
+      <FooterPage/>
     </div>
   );
 };

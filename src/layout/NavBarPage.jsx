@@ -47,8 +47,8 @@ const NavBarPage = () => {
   return (
     <div className="w-full font-sans">
       {/* Main Navbar */}
-      <div className="bg-white shadow px-6 flex flex-col items-center">
-        <div className="w-[70%] mx-auto flex items-center justify-between ">
+      <div className="bg-gray-100 shadow px-6 flex flex-col items-center">
+        <div className="w-[80%] mx-auto flex items-center justify-between ">
           {/* Logo */}
           <div className="w-[100px]">
             <img
