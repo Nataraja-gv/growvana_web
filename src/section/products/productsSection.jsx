@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { getProducts } from "../../services/products/products";
 import ProductCard from "../../component/productCard";
+import { useSnackbar } from "notistack";
+
 
 const ProductsSection = () => {
   const [productsList, setProductsList] = useState([]);
+  const [selectColor, setSelectColor] = useState();
   const [loading, setLoading] = useState(false);
+ 
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -21,6 +25,7 @@ const ProductsSection = () => {
 
     fetchProducts();
   }, []);
+
    
 
   return (
@@ -52,6 +57,8 @@ const ProductsSection = () => {
                 image={product?.product_images[0]?.image_link}
                 colors={product?.color_options}
                 productId={product?._id}
+                selectedColor={selectColor}
+                setSelectedColor={setSelectColor}
               />
             );
           })
