@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import { userLogout } from "../services/auth/loginAuth";
 import { removeUser } from "../utils/feature/userData";
+import { useNavigate } from "react-router-dom";
+import { getCartitem } from "../services/cart/cart";
 
 const NavBarPage = () => {
   const [dropDown, setDropDown] = useState(false);
@@ -12,12 +14,27 @@ const NavBarPage = () => {
   const { enqueueSnackbar } = useSnackbar();
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const naviagte = useNavigate();
 
   const dropdownRef = useRef();
 
   const handleDropDown = () => {
     setDropDown((prev) => !prev);
   };
+
+  useEffect(() => {
+    const fetchProductsCart = async () => {
+      try {
+        const res = await getCartitem();
+        if (res) {
+          setCart(res?.data);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchProductsCart();
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -45,7 +62,7 @@ const NavBarPage = () => {
   };
 
   return (
-    <div className="w-full font-sans">
+    <div className="w-full font-sans fixed top-0 z-10 ">
       {/* Main Navbar */}
       <div className="bg-gray-100 shadow px-6 flex flex-col items-center">
         <div className="w-[80%] mx-auto flex items-center justify-between ">
@@ -127,7 +144,10 @@ const NavBarPage = () => {
               )}
             </div>
 
-            <div className="relative cursor-pointer">
+            <div
+              className="relative cursor-pointer"
+              onClick={() => naviagte("/cart")}
+            >
               <ShoppingCart className="w-5 h-5 hover:text-green-700" />
               <span className="absolute -top-2 -right-2 bg-black text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
                 0

@@ -30,7 +30,9 @@ const MainLayout = () => {
   return (
     <div>
       <NavBarPage />
-      <Outlet />
+       <div className=" mt-[100px]">
+        <Outlet />
+       </div>
       <FooterPage/>
     </div>
   );

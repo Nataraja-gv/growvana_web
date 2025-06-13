@@ -40,7 +40,7 @@ const ProductCard = ({
       }
     };
     fetchProductsCart();
-  }, [allReadyBag]);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

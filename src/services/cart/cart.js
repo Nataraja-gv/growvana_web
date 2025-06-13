@@ -59,3 +59,101 @@ export const getCartitem = async () => {
     });
   }
 };
+
+export const DeleteCartitem = async (data) => {
+  const config = {
+    method: "POST",
+    maxBodyLength: Infinity,
+    url: "/user/cart/remove",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data,
+  };
+  try {
+    const res = await axiosInstance.request(config);
+    return res?.data;
+  } catch (error) {
+    enqueueSnackbar(error.response.data.message, {
+      variant: "error",
+    });
+  }
+};
+
+export const clearCartitems = async () => {
+  const config = {
+    method: "POST",
+    maxBodyLength: Infinity,
+    url: "/user/cart/clear",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  try {
+    const res = await axiosInstance.request(config);
+    return res?.data;
+  } catch (error) {
+    enqueueSnackbar(error.response.data.message, {
+      variant: "error",
+    });
+  }
+};
+
+export const cartItemQuantity = async (data) => {
+  const config = {
+    method: "POST",
+    maxBodyLength: Infinity,
+    url: "/user/cart",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data,
+  };
+  try {
+    const res = await axiosInstance.request(config);
+    return res?.data;
+  } catch (error) {
+    enqueueSnackbar(error.response.data.message, {
+      variant: "error",
+    });
+  }
+};
+
+export const getUserAddress = async () => {
+  const config = {
+    method: "GET",
+    maxBodyLength: Infinity,
+    url: "/user/address/all",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  try {
+    const res = await axiosInstance.request(config);
+    return res?.data;
+  } catch (error) {
+    enqueueSnackbar(error.response.data.message, {
+      variant: "error",
+    });
+  }
+};
+
+export const newAddress = async (data) => {
+  const config = {
+    method: "POST",
+    maxBodyLength: Infinity,
+    url: "/user/address/new",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data,
+  };
+  try {
+    const res = await axiosInstance.request(config);
+    return res?.data;
+  } catch (error) {
+    enqueueSnackbar(error.response.data.message, {
+      variant: "error",
+    });
+  }
+};

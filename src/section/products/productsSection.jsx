@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getProducts } from "../../services/products/products";
 import ProductCard from "../../component/productCard";
-import { useSnackbar } from "notistack";
+ 
 
 
 const ProductsSection = () => {

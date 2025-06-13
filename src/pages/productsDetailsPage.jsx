@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { getProductById } from "../services/products/products";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { AddToCart, getCartitem } from "../services/cart/cart";
+import { useSnackbar } from "notistack";
+import { useSelector } from "react-redux";
 
 const ProductsDetailsPage = () => {
   const { id } = useParams();
   const [productDetails, setProductDetails] = useState(null);
   const [loading, setLoading] = useState(false);
   const [selectedColor, setSelectedColor] = useState(null);
+  const [allReadyBag, setAllReadyBag] = useState([]);
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+  const user = useSelector((state) => state?.user);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -23,6 +30,20 @@ const ProductsDetailsPage = () => {
 
     fetchProductDetails();
   }, [id]);
+   
+  useEffect(() => {
+    const fetchProductsCart = async () => {
+      try {
+        const res = await getCartitem();
+        if (res) {
+          setAllReadyBag(res?.data);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchProductsCart();
+  }, []);
 
   if (loading) {
     return (
@@ -48,6 +69,35 @@ const ProductsDetailsPage = () => {
     offer_price,
     color_options,
   } = productDetails;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!user?.name) {
+      navigate("/login");
+    }
+    const color = selectedColor;
+    if (!color) {
+      enqueueSnackbar("Please select a color first", { variant: "warning" });
+      return;
+    }
+    try {
+      const data = {
+        cartItems: [
+          {
+            productId: id,
+            quantity: 1,
+            colorType: color,
+          },
+        ],
+      };
+      const res = await AddToCart(data);
+      if (res) {
+        enqueueSnackbar("product added successfully", { variant: "success" });
+      }
+    } catch (error) {
+      enqueueSnackbar(error?.message, { variant: "error" });
+    }
+  };
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-10">
@@ -123,22 +173,35 @@ const ProductsDetailsPage = () => {
               </div>
             </div>
             <div className="mt-6">
-              <h2 className=" text-[14px] font-semibold text-green-700">HIGHLIGHTS:</h2>
+              <h2 className=" text-[14px] font-semibold text-green-700">
+                HIGHLIGHTS:
+              </h2>
               <div className="flex items-center gap-4 p-3 bg-blue-400 border border-gray-200 rounded-[20px] mt-4">
                 <img
                   src="https://cdn.shopify.com/s/files/1/0646/8327/8550/files/watering-can-ezgif.com-resize.gif?v=1736489817"
                   alt="Watering Can"
                   className="w-10 h-10"
                 />
-                <div >
-                  <p className="text-[14px] font-semibold">Water Just Once a Week</p>
+                <div>
+                  <p className="text-[14px] font-semibold">
+                    Water Just Once a Week
+                  </p>
                   <p className="text-[14px]">{productDetails?.description}</p>
                 </div>
               </div>
             </div>
-            <button className="mt-6 w-full bg-green-700 text-white py-3 rounded-xl text-lg font-medium hover:bg-green-800 transition duration-300">
-              Add to Basket
-            </button>
+            {allReadyBag.some((item) => item?.productId?._id === id) ? (
+              <button className="mt-6 w-full bg-green-700 text-white py-3 rounded-xl text-lg font-medium hover:bg-green-800 transition duration-300">
+                Added
+              </button>
+            ) : (
+              <button
+                onClick={handleSubmit}
+                className="mt-6 w-full bg-green-700 text-white py-3 rounded-xl text-lg font-medium hover:bg-green-800 transition duration-300"
+              >
+                Add to Basket
+              </button>
+            )}
           </div>
         </div>
       </div>
