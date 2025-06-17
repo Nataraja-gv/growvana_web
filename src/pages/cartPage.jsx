@@ -10,11 +10,14 @@ import { Trash2 } from "lucide-react";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 
+import { postOrder } from "../services/order/order";
+
 const CartPage = () => {
   const [cart, setCart] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
   const [address, setAddress] = useState(null);
   const [selectedAddress, setSelectedAddressId] = useState();
+  const [paymentType, setPaymentType] = useState("COD");
 
   const handleQuantity = async (productId, action, colorType) => {
     try {
@@ -99,6 +102,60 @@ const CartPage = () => {
     fetchAddress();
   }, []);
 
+  const totalSubTotal = cart?.reduce((acc, item) => {
+    const quantity = item.quantity || 0;
+    const currentPrice = item.productId?.currect_price || 0;
+    return acc + currentPrice * quantity;
+  }, 0);
+
+  const totalFinalPrice = cart?.reduce((acc, item) => {
+    const quantity = item.quantity || 0;
+    const offerPrice = item.productId.offer_price || 0;
+    return acc + offerPrice * quantity;
+  }, 0);
+
+  const totalDisocunt = cart?.reduce((acc, item) => {
+    const offerPrice = item?.productId?.offer_price || 0;
+    const currentPrice = item?.productId?.currect_price || 0;
+    const quantity = item?.quantity || 0;
+    return acc + (currentPrice - offerPrice) * quantity;
+  }, 0);
+
+  const handleProceedPay = async () => {
+    if (!selectedAddress) {
+      enqueueSnackbar("address is required", { variant: "info" });
+      return;
+    }
+
+    if (cart?.length <= 0) {
+      enqueueSnackbar("Items is required", { variant: "info" });
+      return;
+    }
+
+    if (!paymentType) {
+      enqueueSnackbar("select payment is required", { variant: "info" });
+      return;
+    }
+
+    try {
+      const data = {
+        address: selectedAddress,
+        items: cart?.map((item) => ({
+          product: item?.productId?._id,
+          quantity: item?.quantity,
+        })),
+        paymentMethod: paymentType,
+      };
+      const res = await postOrder(data);
+      if (res) {
+        enqueueSnackbar("Order Placed successfully", { variant: "success" });
+        navigate("/");
+      }
+    } catch (error) {
+      enqueueSnackbar(error?.message, { variant: "error" });
+    }
+  };
+
   return (
     <div className="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -139,9 +196,9 @@ const CartPage = () => {
                           {item?.colorType}
                         </p>
                         <p className="mt-1 text-sm text-green-700 font-medium">
-                          ₹{item?.productId?.currect_price}{" "}
+                          ₹{item?.productId?.offer_price}{" "}
                           <span className="text-gray-400 line-through ml-2">
-                            ₹{item?.productId?.offer_price}
+                            ₹{item?.productId?.currect_price}
                           </span>
                         </p>
                       </div>
@@ -235,6 +292,47 @@ const CartPage = () => {
               })}
             </div>
           </div>
+          <div>
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              Select Payment Type
+            </h2>
+            <div className="flex mb-[25px]">
+              <div className="flex items-center me-4">
+                <input
+                  id="status-active"
+                  type="radio"
+                  value="true"
+                  name="status"
+                  checked={paymentType === "COD"}
+                  onChange={() => setPaymentType("COD")}
+                  className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500"
+                />
+                <label
+                  htmlFor="status-active"
+                  className="ms-2 text-sm font-medium text-gray-900"
+                >
+                  Cash on Delivary
+                </label>
+              </div>
+              <div className="flex items-center me-4">
+                <input
+                  id="status-inactive"
+                  type="radio"
+                  value="false"
+                  name="status"
+                  checked={paymentType === "Online"}
+                  onChange={() => setPaymentType("Online")}
+                  className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500"
+                />
+                <label
+                  htmlFor="status-inactive"
+                  className="ms-2 text-sm font-medium text-gray-900"
+                >
+                  Online Payment
+                </label>
+              </div>
+            </div>
+          </div>
 
           <div className="bg-white rounded-3xl shadow-lg p-8 sticky top-[130px] h-fit">
             <h2 className="text-xl font-bold text-gray-800 mb-6">
@@ -244,19 +342,24 @@ const CartPage = () => {
             <div className="space-y-4 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-600">Subtotal</span>
-                <span className="text-gray-800 font-medium">₹425</span>
+                <span className="text-gray-800 font-medium">
+                  ₹{totalSubTotal}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Discount</span>
-                <span className="text-green-600">− ₹334</span>
+                <span className="text-green-600">− ₹{totalDisocunt}</span>
               </div>
               <div className="flex justify-between border-t pt-4 text-base font-semibold">
                 <span>Total</span>
-                <span>₹425</span>
+                <span>₹{totalFinalPrice}</span>
               </div>
             </div>
 
-            <button className="mt-6 w-full bg-green-600 hover:bg-green-700 transition text-white py-3 rounded-xl text-sm font-medium shadow">
+            <button
+              onClick={handleProceedPay}
+              className="mt-6 w-full bg-green-600 hover:bg-green-700 transition text-white py-3 rounded-xl text-sm font-medium shadow"
+            >
               Proceed to Checkout
             </button>
           </div>
