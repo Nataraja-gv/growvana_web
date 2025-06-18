@@ -10,7 +10,7 @@ import { Trash2 } from "lucide-react";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 
-import { postOrder } from "../services/order/order";
+import { postOrder, postOrderRazorPay } from "../services/order/order";
 
 const CartPage = () => {
   const [cart, setCart] = useState([]);
@@ -146,10 +146,38 @@ const CartPage = () => {
         })),
         paymentMethod: paymentType,
       };
-      const res = await postOrder(data);
-      if (res) {
-        enqueueSnackbar("Order Placed successfully", { variant: "success" });
-        navigate("/");
+      if (paymentType === "Online") {
+        const razorPayResponse = await postOrderRazorPay(data);
+
+        const order = razorPayResponse?.data;
+        const options = {
+          key: "rzp_test_AB3JXDeazzdzSW",
+          amount: order.amount,
+          currency: "INR",
+          name: "GrowVana",
+          description: "Test Transaction",
+          image:
+            "https://freshcartdev.s3.eu-north-1.amazonaws.com/growvana.jpg",
+          order_id: order.id,
+          // callback_url: "http://localhost:3000/payment-success",
+          prefill: {
+            name: order.notes.name,
+            email: order.notes.email,
+            contact: "9999999999",
+          },
+          theme: {
+            color: "#008000",
+          },
+        };
+
+        const rzp = new Razorpay(options);
+        rzp.open();
+      } else {
+        const res = await postOrder(data);
+        if (res) {
+          enqueueSnackbar("Order Placed successfully", { variant: "success" });
+          navigate("/");
+        }
       }
     } catch (error) {
       enqueueSnackbar(error?.message, { variant: "error" });
