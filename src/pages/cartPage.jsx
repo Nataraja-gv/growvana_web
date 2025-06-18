@@ -159,7 +159,7 @@ const CartPage = () => {
           image:
             "https://freshcartdev.s3.eu-north-1.amazonaws.com/growvana.jpg",
           order_id: order.id,
-          // callback_url: "http://localhost:3000/payment-success",
+          // callback_url: "/track_order_page",
           prefill: {
             name: order.notes.name,
             email: order.notes.email,
@@ -167,6 +167,15 @@ const CartPage = () => {
           },
           theme: {
             color: "#008000",
+          },
+          handler: function (order) {
+            console.log(order, "response");
+            window.location.href = "/track_order_page";
+          },
+          modal: {
+            ondismiss: function () {
+              window.location.href = "/cart";
+            },
           },
         };
 
@@ -176,11 +185,12 @@ const CartPage = () => {
         const res = await postOrder(data);
         if (res) {
           enqueueSnackbar("Order Placed successfully", { variant: "success" });
-          navigate("/");
+          navigate("/track_order_page");
         }
       }
     } catch (error) {
       enqueueSnackbar(error?.message, { variant: "error" });
+      window.location.href = "/cart";
     }
   };
 
