@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { LoginAuth, signupAuth } from "../services/auth/loginAuth";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/feature/userData";
+import { useNavigate } from "react-router-dom";
 
 const LoginModal = ({ onClose }) => {
   const [mode, setMode] = useState("login");
@@ -14,6 +15,7 @@ const LoginModal = ({ onClose }) => {
     password: "",
   });
 
+  const navigate = useNavigate();
   const handleChange = (key, value) => {
     setUserData((prev) => ({
       ...prev,
@@ -60,7 +62,10 @@ const LoginModal = ({ onClose }) => {
       <div className="bg-white rounded-xl p-8 w-full max-w-md shadow-xl relative">
         <button
           className="absolute top-3 right-3 text-gray-500 hover:text-black text-xl font-bold"
-          onClick={onClose}
+          onClick={() => {
+            navigate("/");
+            onClose();
+          }}
         >
           ×
         </button>

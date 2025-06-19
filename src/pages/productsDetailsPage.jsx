@@ -3,7 +3,8 @@ import { getProductById } from "../services/products/products";
 import { useNavigate, useParams } from "react-router-dom";
 import { AddToCart, getCartitem } from "../services/cart/cart";
 import { useSnackbar } from "notistack";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addCartLength } from "../utils/feature/totalCart";
 
 const ProductsDetailsPage = () => {
   const { id } = useParams();
@@ -14,6 +15,23 @@ const ProductsDetailsPage = () => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const user = useSelector((state) => state?.user);
+  const dispatch = useDispatch();
+
+  const fetchProductsCart = async () => {
+    try {
+      const res = await getCartitem();
+      if (res) {
+        setAllReadyBag(res?.data);
+        dispatch(addCartLength(res?.data?.length));
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchProductsCart();
+  }, []);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -30,20 +48,6 @@ const ProductsDetailsPage = () => {
 
     fetchProductDetails();
   }, [id]);
-   
-  useEffect(() => {
-    const fetchProductsCart = async () => {
-      try {
-        const res = await getCartitem();
-        if (res) {
-          setAllReadyBag(res?.data);
-        }
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    fetchProductsCart();
-  }, []);
 
   if (loading) {
     return (
@@ -92,6 +96,7 @@ const ProductsDetailsPage = () => {
       };
       const res = await AddToCart(data);
       if (res) {
+        fetchProductsCart();
         enqueueSnackbar("product added successfully", { variant: "success" });
       }
     } catch (error) {

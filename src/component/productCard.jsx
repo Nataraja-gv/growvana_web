@@ -3,7 +3,8 @@ import { Star } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { AddToCart, getCartitem } from "../services/cart/cart";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addCartLength } from "../utils/feature/totalCart";
 
 const ProductCard = ({
   title,
@@ -20,6 +21,7 @@ const ProductCard = ({
   const { enqueueSnackbar } = useSnackbar();
   const [allReadyBag, setAllReadyBag] = useState([]);
   const user = useSelector((state) => state?.user);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleSelectedColor = (productId, color) => {
     setSelectedColor((prev) => ({
@@ -28,17 +30,19 @@ const ProductCard = ({
     }));
   };
 
-  useEffect(() => {
-    const fetchProductsCart = async () => {
-      try {
-        const res = await getCartitem();
-        if (res) {
-          setAllReadyBag(res?.data);
-        }
-      } catch (error) {
-        console.log(error.message);
+  const fetchProductsCart = async () => {
+    try {
+      const res = await getCartitem();
+      if (res) {
+        setAllReadyBag(res?.data);
+        dispatch(addCartLength(res?.data?.length));
       }
-    };
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
     fetchProductsCart();
   }, []);
 
@@ -64,6 +68,7 @@ const ProductCard = ({
       };
       const res = await AddToCart(data);
       if (res) {
+        fetchProductsCart();
         enqueueSnackbar("product added successfully", { variant: "success" });
       }
     } catch (error) {

@@ -12,8 +12,11 @@ const NavBarPage = () => {
   const [dropDown, setDropDown] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
+  const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+
+  
 
   const navigate = useNavigate();
 
@@ -22,20 +25,6 @@ const NavBarPage = () => {
   const handleDropDown = () => {
     setDropDown((prev) => !prev);
   };
-
-  useEffect(() => {
-    const fetchProductsCart = async () => {
-      try {
-        const res = await getCartitem();
-        if (res) {
-          setCart(res?.data);
-        }
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    fetchProductsCart();
-  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -86,10 +75,16 @@ const NavBarPage = () => {
               <span className="w-2 h-2 bg-orange-500 rounded-full mr-1"></span>
               SHOP
             </span>
-            <span className="cursor-pointer hover:text-green-700 font-bold text-[16px]">
+            <span
+              onClick={() => navigate("/my_orders")}
+              className="cursor-pointer hover:text-green-700 font-bold text-[16px]"
+            >
               MY ORDERS
             </span>
-            <span className="cursor-pointer hover:text-green-700 font-bold text-[16px]">
+            <span
+              onClick={() => navigate("/track_order_page")}
+              className="cursor-pointer hover:text-green-700 font-bold text-[16px]"
+            >
               TRACK YOUR ORDER
             </span>
           </div>
@@ -155,7 +150,7 @@ const NavBarPage = () => {
             >
               <ShoppingCart className="w-5 h-5 hover:text-green-700" />
               <span className="absolute -top-2 -right-2 bg-black text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
-                0
+                 {cart.cartLength}
               </span>
             </div>
           </div>

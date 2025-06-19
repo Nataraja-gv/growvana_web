@@ -1,4 +1,4 @@
- import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import NavBarPage from "./NavBarPage";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -8,6 +8,7 @@ import FooterPage from "./FooterPage";
 
 const MainLayout = () => {
   const user = useSelector((state) => state?.user);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,10 +31,10 @@ const MainLayout = () => {
   return (
     <div>
       <NavBarPage />
-       <div className=" mt-[100px]">
+      <div className=" mt-[100px]">
         <Outlet />
-       </div>
-      <FooterPage/>
+      </div>
+      <FooterPage />
     </div>
   );
 };

@@ -9,16 +9,18 @@ import {
 import { Trash2 } from "lucide-react";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
-
 import { postOrder, postOrderRazorPay } from "../services/order/order";
+import { useDispatch, useSelector } from "react-redux";
+import { addCartLength } from "../utils/feature/totalCart";
 
 const CartPage = () => {
   const [cart, setCart] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
   const [address, setAddress] = useState(null);
   const [selectedAddress, setSelectedAddressId] = useState();
-  const [paymentType, setPaymentType] = useState("COD");
 
+  const [paymentType, setPaymentType] = useState("COD");
+  const dispatch = useDispatch();
   const handleQuantity = async (productId, action, colorType) => {
     try {
       const data = {
@@ -51,6 +53,7 @@ const CartPage = () => {
       const res = await getCartitem();
       if (res) {
         setCart(res?.data);
+        dispatch(addCartLength(res?.data?.length));
       }
     } catch (error) {
       console.log(error.message);
@@ -58,10 +61,10 @@ const CartPage = () => {
   };
 
   useEffect(() => {
-     
     fetchProductsCart();
+    
   }, []);
-
+   
   const handleDeleteItem = async (productId) => {
     try {
       const data = {

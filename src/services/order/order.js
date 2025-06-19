@@ -40,3 +40,22 @@ export const postOrderRazorPay = async (data) => {
     });
   }
 };
+
+export const userOrdersAll = async () => {
+  const config = {
+    method: "GET",
+    maxBodyLength: Infinity,
+    url: "/user/order/list",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  try {
+    const res = await axiosInstance.request(config);
+    return res?.data;
+  } catch (error) {
+    enqueueSnackbar(error.response.data.message, {
+      variant: "error",
+    });
+  }
+};
