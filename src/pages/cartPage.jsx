@@ -58,6 +58,7 @@ const CartPage = () => {
   };
 
   useEffect(() => {
+     
     fetchProductsCart();
   }, []);
 
@@ -199,7 +200,7 @@ const CartPage = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* 🛒 Cart Section */}
         <div className="lg:col-span-2 bg-white rounded-3xl shadow-md p-8">
-          {cart.length > 0 ? (
+          {cart?.length > 0 ? (
             <>
               <div className="flex justify-between items-center mb-8">
                 <h2 className="text-3xl font-bold text-gray-800">
@@ -214,7 +215,7 @@ const CartPage = () => {
               </div>
 
               <div className="space-y-6">
-                {cart.map((item, index) => (
+                {cart?.map((item, index) => (
                   <div
                     key={index}
                     className="flex items-center justify-between gap-6 border-b pb-6"

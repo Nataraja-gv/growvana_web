@@ -14,7 +14,8 @@ const NavBarPage = () => {
   const { enqueueSnackbar } = useSnackbar();
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const naviagte = useNavigate();
+
+  const navigate = useNavigate();
 
   const dropdownRef = useRef();
 
@@ -69,6 +70,7 @@ const NavBarPage = () => {
           {/* Logo */}
           <div className="w-[100px]">
             <img
+              onClick={() => navigate("/")}
               src="https://freshcartdev.s3.eu-north-1.amazonaws.com/growvana_logo.png"
               alt="Growvana"
               className="h-auto w-full"
@@ -77,7 +79,10 @@ const NavBarPage = () => {
 
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-700">
-            <span className="flex items-center cursor-pointer hover:text-green-700 font-bold text-[16px]">
+            <span
+              onClick={() => navigate("/")}
+              className="flex items-center cursor-pointer hover:text-green-700 font-bold text-[16px]"
+            >
               <span className="w-2 h-2 bg-orange-500 rounded-full mr-1"></span>
               SHOP
             </span>
@@ -146,7 +151,7 @@ const NavBarPage = () => {
 
             <div
               className="relative cursor-pointer"
-              onClick={() => naviagte("/cart")}
+              onClick={() => navigate("/cart")}
             >
               <ShoppingCart className="w-5 h-5 hover:text-green-700" />
               <span className="absolute -top-2 -right-2 bg-black text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">

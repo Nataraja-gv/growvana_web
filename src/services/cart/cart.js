@@ -54,9 +54,7 @@ export const getCartitem = async () => {
     const res = await axiosInstance.request(config);
     return res?.data;
   } catch (error) {
-    enqueueSnackbar(error.response.data.message, {
-      variant: "error",
-    });
+     console.log("")
   }
 };
 
