@@ -22,7 +22,6 @@ const CategorySection = () => {
     fetchCategories();
   }, []);
 
-   
   return (
     <div className="flex  mt-[50px] w-[80%] mx-auto items-center justify-between flex-wrap gap-4 p-4">
       {categories?.length > 0 ? (
@@ -31,7 +30,7 @@ const CategorySection = () => {
             key={category?._id}
             title={category?.category_name}
             imageUrl={category?.category_image}
-            link={`/category/${category.id}`}
+            id={category._id}
           />
         ))
       ) : (

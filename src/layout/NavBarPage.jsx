@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import { userLogout } from "../services/auth/loginAuth";
 import { removeUser } from "../utils/feature/userData";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getCartitem } from "../services/cart/cart";
 
 const NavBarPage = () => {
@@ -15,8 +15,13 @@ const NavBarPage = () => {
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const location = useLocation();
+  const [pathName, setPathname] = useState();
 
-  
+  const path = location?.pathname;
+  useEffect(() => {
+    setPathname(path);
+  }, [path]);
 
   const navigate = useNavigate();
 
@@ -67,24 +72,32 @@ const NavBarPage = () => {
           </div>
 
           {/* Navigation Links */}
-          <div className="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-700">
+          <div className="hidden md:flex items-center justify-center mx-auto space-x-6 text-sm font-medium text-gray-700">
             <span
               onClick={() => navigate("/")}
               className="flex items-center cursor-pointer hover:text-green-700 font-bold text-[16px]"
             >
-              <span className="w-2 h-2 bg-orange-500 rounded-full mr-1"></span>
+              {pathName === "/" && (
+                <span className="inline-block w-2 h-2 bg-orange-500 rounded-full mr-1" />
+              )}
               SHOP
             </span>
             <span
               onClick={() => navigate("/my_orders")}
-              className="cursor-pointer hover:text-green-700 font-bold text-[16px]"
+              className="flex items-center cursor-pointer hover:text-green-700 font-bold text-[16px]"
             >
+              {pathName === "/my_orders" && (
+                <span className="inline-block w-2 h-2 bg-orange-500 rounded-full mr-1" />
+              )}
               MY ORDERS
             </span>
             <span
               onClick={() => navigate("/track_order_page")}
-              className="cursor-pointer hover:text-green-700 font-bold text-[16px]"
+              className="flex items-center cursor-pointer hover:text-green-700 font-bold text-[16px]"
             >
+              {pathName === "/track_order_page" && (
+                <span className="inline-block w-2 h-2 bg-orange-500 rounded-full mr-1" />
+              )}
               TRACK YOUR ORDER
             </span>
           </div>
@@ -94,7 +107,10 @@ const NavBarPage = () => {
             className="flex items-center space-x-4 text-gray-700 relative"
             ref={dropdownRef}
           >
-            <Search className="w-5 h-5 cursor-pointer hover:text-green-700" />
+            <Search
+              onClick={() => navigate("/search")}
+              className="w-5 h-5 cursor-pointer hover:text-green-700"
+            />
             <div className="relative">
               <UserRound
                 className="w-5 h-5 cursor-pointer hover:text-green-700"
@@ -110,7 +126,7 @@ const NavBarPage = () => {
                     Profile
                   </a>
                   <a
-                    href="#"
+                    href="/my_orders"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     role="menuitem"
                   >
@@ -150,7 +166,7 @@ const NavBarPage = () => {
             >
               <ShoppingCart className="w-5 h-5 hover:text-green-700" />
               <span className="absolute -top-2 -right-2 bg-black text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
-                 {cart.cartLength}
+                {cart.cartLength}
               </span>
             </div>
           </div>

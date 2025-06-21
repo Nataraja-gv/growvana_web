@@ -28,6 +28,9 @@ const MyOrders = () => {
     (order) => order.orderStatus === "Delivered"
   );
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
   return (
     <div className="max-w-7xl mx-auto p-6">
       <div className="mb-10 text-center">
@@ -78,9 +81,12 @@ const MyOrders = () => {
                         <h4 className="font-semibold text-gray-800 ">
                           {product.product_name}
                         </h4>
-                        <p className="text-gray-500 text-sm">Qty: {quantity} * {product.offer_price}</p>
+                        <p className="text-gray-500 text-sm">
+                          Qty: {quantity} * {product.offer_price}
+                        </p>
                         <p className="text-green-600 text-sm font-medium flex items-center gap-1">
-                          <IndianRupee size={14} /> {product.offer_price * quantity}
+                          <IndianRupee size={14} />{" "}
+                          {product.offer_price * quantity}
                         </p>
                       </div>
                     </div>

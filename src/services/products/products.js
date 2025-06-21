@@ -39,4 +39,46 @@ export const getProductById = async (productId) => {
   }
 };
 
+export const getProductsCategoryById = async (categoryId) => {
+  const config = {
+    method: "GET",
+    maxBodyLength: Infinity,
+    url: `/product/category/all`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    params: {
+      categoryId,
+    },
+  };
+  try {
+    const res = await axiosInstance.request(config);
+    return res?.data;
+  } catch (error) {
+    enqueueSnackbar(error.response.data.message, {
+      variant: "error",
+    });
+  }
+};
 
+export const getfilterProducts = async (search) => {
+  const config = {
+    method: "GET",
+    maxBodyLength: Infinity,
+    url: `/products/filter`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    params: {
+      filter: search,
+    },
+  };
+  try {
+    const res = await axiosInstance.request(config);
+    return res?.data;
+  } catch (error) {
+    enqueueSnackbar(error.response.data.message, {
+      variant: "error",
+    });
+  }
+};

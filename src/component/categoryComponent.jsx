@@ -1,10 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const CategoryCard = ({ title, imageUrl, link }) => {
+const CategoryCard = ({ title, imageUrl, id }) => {
+  const navigate = useNavigate();
   return (
-    <Link
-      to={link}
+    <div
+      onClick={() => navigate(`/products/category/${id}`, { state: { title } })}
       className="flex flex-col items-center transition-transform hover:scale-105"
     >
       <div
@@ -15,7 +16,7 @@ const CategoryCard = ({ title, imageUrl, link }) => {
       <p className="mt-2 text-[16px] font-semibold text-green-900  hover:underline">
         {title}
       </p>
-    </Link>
+    </div>
   );
 };
 

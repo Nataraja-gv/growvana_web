@@ -8,6 +8,8 @@ import NewAddress from "../pages/newAddress";
 import TrackOrderPage from "../pages/trackorderPage";
 import MyOrders from "../pages/myorders";
 import LoginModal from "../pages/loginpage";
+import CategoryProduct from "../pages/categoryProduct";
+import SearchProduct from "../pages/search_products";
 
 const RoutesPage = () => {
   return (
@@ -19,6 +21,11 @@ const RoutesPage = () => {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/address/new" element={<NewAddress />} />
           <Route path="/track_order_page" element={<TrackOrderPage />} />
+          <Route
+            path="/products/category/:categoryId"
+            element={<CategoryProduct />}
+          />
+          <Route path="/search" element={<SearchProduct />} />
           <Route path="/my_orders" element={<MyOrders />} />
           <Route path="/login" element={<LoginModal />} />
 

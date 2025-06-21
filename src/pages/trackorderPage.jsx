@@ -38,7 +38,9 @@ const TrackOrderPage = () => {
       try {
         const res = await userOrdersAll();
         const filtered = (res?.data || []).filter(
-          (order) => order.orderStatus !== "Delivered"
+          (order) =>
+            order.orderStatus !== "Delivered" &&
+            order.paymentStatus !== "Failed"
         );
         setActiveOrders(filtered);
       } catch (error) {
@@ -96,7 +98,9 @@ const TrackOrderPage = () => {
                       <h4 className="text-sm font-semibold text-gray-800">
                         {product.product_name}
                       </h4>
-                      <p className="text-xs text-gray-500">Qty: {quantity} *{product?.offer_price}</p>
+                      <p className="text-xs text-gray-500">
+                        Qty: {quantity} *{product?.offer_price}
+                      </p>
                       <p className="text-xs text-green-600 font-semibold">
                         ₹{product.offer_price * quantity}
                       </p>
@@ -148,8 +152,7 @@ const TrackOrderPage = () => {
                       <span className="capitalize">{order.paymentStatus}</span>
                     </p>
                     <p className="text-green-600 font-semibold mt-1 flex items-center gap-1">
-                        ₹ {" "}
-                      {order.totalAmount}
+                      ₹ {order.totalAmount}
                     </p>
                   </div>
                 </div>

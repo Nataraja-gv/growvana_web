@@ -62,9 +62,8 @@ const CartPage = () => {
 
   useEffect(() => {
     fetchProductsCart();
-    
   }, []);
-   
+
   const handleDeleteItem = async (productId) => {
     try {
       const data = {
@@ -197,6 +196,10 @@ const CartPage = () => {
       window.location.href = "/cart";
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
 
   return (
     <div className="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">

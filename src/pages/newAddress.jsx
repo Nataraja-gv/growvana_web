@@ -1,5 +1,5 @@
 import { useSnackbar } from "notistack";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { newAddress } from "../services/cart/cart";
 import { useNavigate } from "react-router-dom";
 
@@ -36,6 +36,12 @@ const NewAddress = () => {
       enqueueSnackbar(error?.message, { variant: "error" });
     }
   };
+
+
+  
+   useEffect(()=>{
+    window.scrollTo(0,0)
+   })
 
   return (
     <div className="max-w-xl mx-auto p-6 bg-white shadow-lg rounded-2xl mt-10">
