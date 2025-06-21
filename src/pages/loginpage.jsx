@@ -36,6 +36,7 @@ const LoginModal = ({ onClose }) => {
         if (res) {
           dispatch(addUser(res?.data));
           enqueueSnackbar("Login successful", { variant: "success" });
+          navigate("/")
           onClose?.();
         }
       } else {
@@ -43,6 +44,8 @@ const LoginModal = ({ onClose }) => {
         if (res) {
           dispatch(addUser(res?.data));
           enqueueSnackbar("Registration successful", { variant: "success" });
+          navigate("/")
+
           onClose?.();
         }
       }

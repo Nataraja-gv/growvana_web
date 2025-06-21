@@ -119,7 +119,7 @@ const NavBarPage = () => {
               {dropDown && (
                 <div className="absolute right-0 top-8 z-20 w-56 rounded border border-gray-300 bg-white shadow-md">
                   <a
-                    href="#"
+                    href="/user/profile"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     role="menuitem"
                   >

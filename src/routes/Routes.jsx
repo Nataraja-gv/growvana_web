@@ -10,6 +10,7 @@ import MyOrders from "../pages/myorders";
 import LoginModal from "../pages/loginpage";
 import CategoryProduct from "../pages/categoryProduct";
 import SearchProduct from "../pages/search_products";
+import ProfilePage from "../pages/profilePage";
 
 const RoutesPage = () => {
   return (
@@ -28,6 +29,7 @@ const RoutesPage = () => {
           <Route path="/search" element={<SearchProduct />} />
           <Route path="/my_orders" element={<MyOrders />} />
           <Route path="/login" element={<LoginModal />} />
+          <Route path="/user/profile" element={<ProfilePage />} />
 
           <Route path="*" element="No page" />
         </Route>
