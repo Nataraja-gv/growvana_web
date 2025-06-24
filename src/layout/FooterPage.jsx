@@ -73,7 +73,7 @@ const FooterPage = () => {
                 href="tel:+918376885182"
                 className="text-lime-300 hover:underline"
               >
-                +91 8033003333
+                +91 8088810999
               </a>
               <br />
               Email:{" "}
