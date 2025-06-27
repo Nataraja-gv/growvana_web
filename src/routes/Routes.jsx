@@ -11,6 +11,8 @@ import LoginModal from "../pages/loginpage";
 import CategoryProduct from "../pages/categoryProduct";
 import SearchProduct from "../pages/search_products";
 import ProfilePage from "../pages/profilePage";
+import SubscriptionPage from "../pages/premiumPage";
+ 
 
 const RoutesPage = () => {
   return (
@@ -22,6 +24,8 @@ const RoutesPage = () => {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/address/new" element={<NewAddress />} />
           <Route path="/track_order_page" element={<TrackOrderPage />} />
+          <Route path="/premium" element={<SubscriptionPage />} />
+
           <Route
             path="/products/category/:categoryId"
             element={<CategoryProduct />}

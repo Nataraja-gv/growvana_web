@@ -59,3 +59,67 @@ export const userOrdersAll = async () => {
     });
   }
 };
+
+export const createSubscription = async (planType) => {
+  const config = {
+    method: "POST",
+    maxBodyLength: Infinity,
+    url: "/user/subscription",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    params: {
+      planType,
+    },
+  };
+  try {
+    const res = await axiosInstance.request(config);
+    return res?.data;
+  } catch (error) {
+    enqueueSnackbar(error.response.data.message, {
+      variant: "error",
+    });
+  }
+};
+
+export const createRazorSubscription = async (planType) => {
+  const config = {
+    method: "POST",
+    maxBodyLength: Infinity,
+    url: "/user/subscription/razorPay",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    params: {
+      planType,
+    },
+  };
+  try {
+    const res = await axiosInstance.request(config);
+    return res?.data;
+  } catch (error) {
+    enqueueSnackbar(error.response.data.message, {
+      variant: "error",
+    });
+  }
+}
+
+export const getActiveSubsciption = async () => {
+  const config = {
+    method: "GET",
+    maxBodyLength: Infinity,
+    url: "/user/subscription/valid",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  try {
+    const res = await axiosInstance.request(config);
+    return res?.data;
+  } catch (error) {
+    // enqueueSnackbar(error.response.data.message, {
+    //   variant: "error",
+    // });
+    console.log(error.response.data.message);
+  }
+};

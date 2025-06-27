@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { ShoppingCart, Search, Percent, UserRound } from "lucide-react";
+import { ShoppingCart, Search, Percent, UserRound, Crown } from "lucide-react";
 import LoginModal from "../pages/loginpage";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
@@ -120,10 +120,11 @@ const NavBarPage = () => {
                 <div className="absolute right-0 top-8 z-20 w-56 rounded border border-gray-300 bg-white shadow-md">
                   <a
                     href="/user/profile"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                   className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     role="menuitem"
                   >
-                    Profile
+                    Profile{" "}
+                   {user?.isPremium && <Crown color="#f0dd0a" size={16} />}
                   </a>
                   <a
                     href="/my_orders"
@@ -133,7 +134,7 @@ const NavBarPage = () => {
                     My Orders
                   </a>
                   <a
-                    href="#"
+                    href="/premium"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     role="menuitem"
                   >
