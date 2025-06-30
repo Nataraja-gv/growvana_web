@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import {
   cartItemQuantity,
   clearCartitems,
@@ -172,7 +172,7 @@ const CartPage = () => {
             color: "#008000",
           },
           handler: function (order) {
-            console.log(order, "response");
+            // console.log(order, "response");
             window.location.href = "/track_order_page";
           },
           modal: {
@@ -200,6 +200,9 @@ const CartPage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   });
+  useEffect(()=>{
+   setSelectedAddressId(address?.addresses?.[0]?._id)
+  },[address])
 
   return (
     <div className="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
