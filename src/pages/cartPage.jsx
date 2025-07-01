@@ -18,6 +18,7 @@ const CartPage = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [address, setAddress] = useState(null);
   const [selectedAddress, setSelectedAddressId] = useState();
+  const user = useSelector((state) => state?.user);
 
   const [paymentType, setPaymentType] = useState("COD");
   const dispatch = useDispatch();
@@ -104,6 +105,7 @@ const CartPage = () => {
     };
     fetchAddress();
   }, []);
+  const deliveryFee = user?.isPremium ? 0 : 25;
 
   const totalSubTotal = cart?.reduce((acc, item) => {
     const quantity = item.quantity || 0;
@@ -114,7 +116,7 @@ const CartPage = () => {
   const totalFinalPrice = cart?.reduce((acc, item) => {
     const quantity = item.quantity || 0;
     const offerPrice = item.productId.offer_price || 0;
-    return acc + offerPrice * quantity;
+    return acc + offerPrice * quantity +deliveryFee;
   }, 0);
 
   const totalDisocunt = cart?.reduce((acc, item) => {
@@ -200,9 +202,10 @@ const CartPage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   });
-  useEffect(()=>{
-   setSelectedAddressId(address?.addresses?.[0]?._id)
-  },[address])
+  useEffect(() => {
+    setSelectedAddressId(address?.addresses?.[0]?._id);
+  }, [address]);
+   
 
   return (
     <div className="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
@@ -398,6 +401,12 @@ const CartPage = () => {
                 <span className="text-gray-600">Discount</span>
                 <span className="text-green-600">− ₹{totalDisocunt}</span>
               </div>
+              {totalSubTotal > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Delivary Free</span>
+                  <span className="text-green-600">₹ {deliveryFee}</span>
+                </div>
+              )}
               <div className="flex justify-between border-t pt-4 text-base font-semibold">
                 <span>Total</span>
                 <span>₹{totalFinalPrice}</span>
