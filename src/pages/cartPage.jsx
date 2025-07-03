@@ -116,7 +116,7 @@ const CartPage = () => {
   const totalFinalPrice = cart?.reduce((acc, item) => {
     const quantity = item.quantity || 0;
     const offerPrice = item.productId.offer_price || 0;
-    return acc + offerPrice * quantity +deliveryFee;
+    return acc + offerPrice * quantity + deliveryFee;
   }, 0);
 
   const totalDisocunt = cart?.reduce((acc, item) => {
@@ -205,7 +205,6 @@ const CartPage = () => {
   useEffect(() => {
     setSelectedAddressId(address?.addresses?.[0]?._id);
   }, [address]);
-   
 
   return (
     <div className="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
@@ -389,6 +388,43 @@ const CartPage = () => {
             <h2 className="text-xl font-bold text-gray-800 mb-6">
               Order Summary
             </h2>
+            {!user?.isPremium && (
+              <div className="rounded-xl bg-green-50 border border-green-300 p-4 shadow-sm mb-4">
+                <div className="flex items-start gap-3">
+                  <div className="bg-green-500 text-white rounded-full p-2 shadow-sm">
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-green-700 font-semibold mb-1">
+                      Unlock Premium Benefits
+                    </h4>
+                    <ul className="list-disc text-sm text-green-600 pl-4 space-y-1">
+                      <li>Free delivery on all orders</li>
+                      <li>Exclusive discounts</li>
+                      <li>Early access to deals</li>
+                      <li>Priority support</li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="mt-4 text-right">
+                  <button onClick={()=>navigate("/premium")} className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium shadow transition-all">
+                    Upgrade Now
+                  </button>
+                </div>
+              </div>
+            )}
 
             <div className="space-y-4 text-sm">
               <div className="flex justify-between">
