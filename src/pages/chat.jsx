@@ -6,8 +6,10 @@ import { BASEURL } from "../config";
 import { userGetChats } from "../services/auth/loginAuth";
 import dayjs from "dayjs";
 
-const socket = io(BASEURL);
-
+const socket =
+  location.hostname === "localhost"
+    ? io(BASEURL)
+    : io("/", { path: "/api/socket.io" });
 
 const ChatPage = () => {
   const userId = useSelector((state) => state.user?._id);
