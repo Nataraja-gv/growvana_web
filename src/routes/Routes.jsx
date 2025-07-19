@@ -12,7 +12,7 @@ import CategoryProduct from "../pages/categoryProduct";
 import SearchProduct from "../pages/search_products";
 import ProfilePage from "../pages/profilePage";
 import SubscriptionPage from "../pages/premiumPage";
- 
+import ChatPage from "../pages/chat";
 
 const RoutesPage = () => {
   return (
@@ -34,6 +34,7 @@ const RoutesPage = () => {
           <Route path="/my_orders" element={<MyOrders />} />
           <Route path="/login" element={<LoginModal />} />
           <Route path="/user/profile" element={<ProfilePage />} />
+          <Route path="/user/chat" element={<ChatPage />} />
 
           <Route path="*" element="No page" />
         </Route>

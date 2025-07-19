@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "^2.8.2",
     "@tailwindcss/vite": "^4.1.8",
     "axios": "^1.9.0",
+    "dayjs": "^1.11.13",
     "flowbite": "^3.1.2",
     "lucide-react": "^0.513.0",
     "notistack": "^3.0.2",
@@ -20,6 +21,7 @@
     "react-dom": "^19.1.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.6.2",
+    "socket.io-client": "^4.8.1",
     "tailwindcss": "^4.1.8"
   },
   "devDependencies": {

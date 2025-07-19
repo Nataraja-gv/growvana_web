@@ -57,7 +57,7 @@ export const userProfile = async () => {
     // enqueueSnackbar(error.response.data.message, {
     //   variant: "error",
     // });
-    console.log(error.message)
+    console.log(error.message);
   }
 };
 
@@ -77,5 +77,25 @@ export const userLogout = async () => {
     enqueueSnackbar(error.response.data.message, {
       variant: "error",
     });
+  }
+};
+
+export const userGetChats = async () => {
+  const config = {
+    method: "GET",
+    maxBodyLength: Infinity,
+    url: "/user/chat",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    params: {
+      targetId: "6867d14773c3c0b10331d8c6",
+    },
+  };
+  try {
+    const res = await axiosInstance.request(config);
+    return res?.data;
+  } catch (error) {
+    console.log(error.message);
   }
 };
