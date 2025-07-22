@@ -67,7 +67,7 @@ const ChatPage = () => {
 
         {/* Chat Messages */}
         <div className="flex-1 overflow-y-auto p-4 space-y-2 flex flex-col">
-          {messages.map((msg, i) => {
+          {messages?.map((msg, i) => {
             const isOwn = msg?.userId === userId;
             return (
               <div
